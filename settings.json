@@ -1,0 +1,53 @@
+{
+  "_comment": "Claude Code global settings. Copy this to ~/.claude/settings.json (on WSL2/Linux/macOS that is your home folder's .claude directory). The hook paths below use $HOME so they resolve to your own home folder automatically — you do NOT need to edit them as long as you also copy the hooks/ folder to ~/.claude/hooks/.",
+
+  "theme": "dark",
+
+  "_comment_autocompact": "Auto-compaction lets long conversations keep going by summarizing older messages instead of running out of room. Leave on.",
+  "autoCompactEnabled": true,
+
+  "_comment_history": "How many days of local conversation history to keep before cleanup. 365 = one year, a sensible default. Lower it if you want less kept on disk.",
+  "cleanupPeriodDays": 365,
+
+  "_comment_env": "The env block holds real environment variables, so only put actual variables here (no comment keys). We deliberately do NOT set DISABLE_AUTOUPDATER, which keeps the auto-updater ON so you stay current. ENABLE_PROMPT_CACHING_1H turns on 1-hour prompt caching to reduce cost/latency on long sessions.",
+  "env": {
+    "ENABLE_PROMPT_CACHING_1H": "true"
+  },
+
+  "_comment_permissions": "Permission prompts are intentionally LEFT ON. Claude Code will ask you before running commands or editing files it isn't already allowed to. As a newer user this is your most important safety layer — do not disable it until you are comfortable. (Power users sometimes turn these off; that is deliberately NOT done here.)",
+
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/claudemd-warn.sh",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/sensitive-files-block.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/dangerous-bash-block.sh",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/push-to-main-warn.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+# Agent / babysitter runtime — must NEVER be committed or shipped downstream.
+# This is autonomous-orchestration scaffolding; a starter kit handed to a friend
+# should ship clean. (Without this line, a routine `git add -A` would commit it.)
+.a5c/
+
+# Secrets / environment — never commit real credentials.
+.env
+.env.*
+!.env.example
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Logs
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node
+node_modules/
