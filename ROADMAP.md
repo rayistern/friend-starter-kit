@@ -11,26 +11,27 @@ despite the hook's own docs saying it shouldn't be — was found and fixed).
 
 ## Near-term — before sharing widely
 
-- [ ] **Add a `test-hooks.sh` self-test script.** Today the README's
-      verification step is "ask Claude to run a dangerous command and see it
-      refused" (Step 5). A small script that pipes simulated hook JSON through
-      each of the four hooks and prints PASS/FAIL would verify the install in
-      one command, without depending on the assistant's phrasing. The test
-      cases used in the 2026-07-03 review are a ready-made starting point.
-- [ ] **Add a one-command installer (`install.sh`).** Step 4's four copy
-      commands are simple, but a single `./install.sh` that creates
-      `~/.claude/hooks/`, copies files, sets execute bits, and *refuses to
-      overwrite an existing `settings.json` without asking* (the README now
-      warns about this, but a script can enforce it) would remove the last
-      real copy/paste friction for a non-expert.
-- [ ] **Decide on a LICENSE.** The repo is private for now, so this isn't
-      urgent — but before it's shared beyond personal friends (or made
-      public), pick a license (MIT is the obvious candidate for a starter
-      kit) so recipients know they can reuse and modify it.
-- [ ] **Generalize or gate the BMAD section.** The README currently assumes
-      the reader "already uses BMAD-METHOD" — true for the original intended
-      friend, not for everyone. If the audience widens, reframe that section
-      as "if you use BMAD..." with a short pointer for people who don't.
+> **Update 2026-08-07: all four near-term items DONE** in the public-OSS prep
+> pass (kit is being prepared to go public). Details noted under each item.
+
+- [x] **Add a `test-hooks.sh` self-test script.** ✅ Done 2026-08-07. `test-hooks.sh`
+      feeds each of the four hooks the two payload shapes Claude Code sends
+      (`Bash` command / file-write) across ~28 cases — destructive commands and
+      secret-file writes that must block, plus safe inputs (incl. the
+      `.env.example` bugfix case) that must pass — and prints PASS/FAIL with an
+      overall exit code. Wired into README Step 5.
+- [x] **Add a one-command installer (`install.sh`).** ✅ Done 2026-08-07. Copies
+      CLAUDE.md/settings.json/hooks into `~/.claude/`, sets execute bits, and
+      **refuses to overwrite an existing `settings.json` or `CLAUDE.md`** unless
+      `--force` (which backs up the old file first). Warns if `jq` is missing.
+      Now the primary path in README Step 4 (manual steps kept in a `<details>`).
+- [x] **Decide on a LICENSE.** ✅ Done 2026-08-07. **MIT**, © 2026 Rayi Stern.
+      `LICENSE` added; referenced from a new README "License" section.
+- [x] **Generalize or gate the BMAD section.** ✅ Done 2026-08-07. Retitled
+      "Optional: how BMAD fits in (skip this if you don't use BMAD)", reframed as
+      "the kit is planning-layer agnostic; *if* you use BMAD, here's how it
+      layers on; if you don't, skip it." The hands-off checklist's BMAD step is
+      now marked optional.
 
 ## Later — nice-to-haves
 

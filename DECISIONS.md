@@ -28,6 +28,14 @@ _Date written: 2026-06-29_
 | `settings.json` with **permission prompts ON** | Deliberate safety choice for a newer user (see EXCLUDED). Also keeps the auto-updater on, enables 1-hour prompt caching, dark theme, auto-compaction, and a 1-year history retention — all harmless sensible defaults. |
 | Four safety **hooks** | `dangerous-bash-block` (blocks `rm -rf`, `git push --force`, `git reset --hard`, `DROP TABLE`, etc.), `sensitive-files-block` (blocks writes to `.env` / credential / key files), `push-to-main-warn` (warns on pushes to `main`), `claudemd-warn` (warns when editing a `CLAUDE.md`). These are the universally-useful safety nets, with no dependency on any personal setup. |
 | `mcp-setup.md` covering **Playwright + web search** | Two genuinely portable, broadly-useful add-ons. Playwright needs no account. Account-bound servers (Gmail/Jira/etc.) are mentioned only as "optional, use your own login." |
+| `install.sh` + `test-hooks.sh` (added 2026-08-07) | Public-OSS prep. `install.sh` removes the last copy/paste friction and refuses to clobber an existing `settings.json`/`CLAUDE.md`; `test-hooks.sh` lets anyone verify the safety net deterministically in one command, without a live session. |
+| `LICENSE` (MIT, added 2026-08-07) | So public recipients know they can reuse/modify the kit. MIT is the conventional choice for a permissive starter kit; © Rayi Stern. |
+
+_Update 2026-08-07: this kit was prepared to be published as public open source
+(previously private). Changes in that pass: added MIT LICENSE, added `install.sh`
+and `test-hooks.sh`, and generalized the README's BMAD section from "you already
+use BMAD" to "optional — skip if you don't." No behavior of the hooks or settings
+changed. See ROADMAP.md for the item-by-item log._
 
 ---
 

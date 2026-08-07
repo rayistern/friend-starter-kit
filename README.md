@@ -25,8 +25,12 @@ friend-starter-kit/
 ├── README.md          ← you are here
 ├── CLAUDE.md          ← default instructions for the assistant
 ├── settings.json      ← Claude Code configuration (safe defaults)
+├── install.sh         ← one-command installer (copies everything into ~/.claude/)
+├── test-hooks.sh      ← self-test that verifies the safety hooks work
 ├── mcp-setup.md       ← optional add-ons (web search, browser automation)
 ├── DECISIONS.md       ← why this kit includes/excludes what it does
+├── ROADMAP.md         ← known gaps and planned improvements
+├── LICENSE            ← MIT license (free to use, modify, and share)
 └── hooks/             ← the safety scripts
     ├── dangerous-bash-block.sh    (BLOCKS things like rm -rf, git push --force)
     ├── sensitive-files-block.sh   (BLOCKS edits to secret files like .env)
@@ -174,8 +178,20 @@ That's it — git can now push to and pull from your GitHub account.
 
 ### 4. Install this starter kit's files
 
-From inside the folder where you put this kit, copy the configuration into your
-Claude Code home folder:
+**The easy way — one command.** From inside the folder where you put this kit:
+
+```bash
+./install.sh
+```
+
+That copies `CLAUDE.md`, `settings.json`, and the safety hooks into
+`~/.claude/` and makes the hooks executable. It will **not** overwrite an
+existing `~/.claude/settings.json` or `CLAUDE.md` — if you've customized Claude
+Code before, it skips those and tells you to merge by hand (or you can re-run
+`./install.sh --force` to replace them, which backs up the old ones first).
+
+<details>
+<summary><b>Prefer to do it by hand?</b> (click to expand the manual steps)</summary>
 
 ```bash
 # Make the Claude Code config folder if it doesn't exist
@@ -190,35 +206,46 @@ cp hooks/*.sh      ~/.claude/hooks/
 chmod +x ~/.claude/hooks/*.sh
 ```
 
-The `settings.json` already points at `$HOME/.claude/hooks/...`, so the hooks
-will be found automatically once they're in `~/.claude/hooks/`.
+If you already have a `~/.claude/settings.json` you care about, don't blindly
+overwrite it — open both files and add this kit's `"hooks"` block to your
+existing one instead.
+</details>
 
-> **Already have a `~/.claude/settings.json`?** The `cp` above would overwrite
-> it. If you've customized Claude Code before, open both files and merge by
-> hand instead (mainly: add this kit's `"hooks"` block to your existing file).
-> If you've never touched Claude Code settings, the plain copy is fine.
+The `settings.json` already points at `$HOME/.claude/hooks/...`, so the hooks
+are found automatically once they're in `~/.claude/hooks/`.
 
 ### 5. Check that the hooks are active
 
-Start Claude Code (`claude`) in any folder and ask it to run a deliberately
-dangerous command, for example: *"run `rm -rf /tmp/does-not-exist`"*. The
-`dangerous-bash-block.sh` hook should refuse it with a clear message. If it does,
-your safety net is working.
+**The quick check — one command.** From the kit folder:
+
+```bash
+./test-hooks.sh
+```
+
+This feeds each of the four hooks the same kind of input Claude Code sends them
+(safe commands and dangerous ones) and prints `PASS`/`FAIL` for each, ending in
+an overall result. Everything should pass. (It needs `jq`, same as the hooks.)
+
+**The live check.** Start Claude Code (`claude`) in any folder and ask it to run
+a deliberately dangerous command, for example: *"run `rm -rf /tmp/does-not-exist`"*.
+The `dangerous-bash-block.sh` hook should refuse it with a clear message. If it
+does, your safety net is working end-to-end inside a real session.
 
 ---
 
-## How BMAD fits in
+## Optional: how BMAD fits in (skip this if you don't use BMAD)
 
-You already use **BMAD-METHOD** (the "Breakthrough Method for Agile AI-Driven
-Development") — a framework that gives the AI a structured way to plan and build:
-it walks through roles like analyst, product manager, architect, and developer
-so a project goes from idea to working code in organized steps.
+This kit is deliberately **planning-layer agnostic**. Its only job is to make
+Claude Code itself safe and well-configured — it does **not** bundle any
+planning or "agent orchestration" system. How you plan and build is up to you.
 
-**In this setup, BMAD is your single planning-and-execution layer.** This
-starter kit deliberately does **not** add any competing orchestration or
-planning system — its job is only to make Claude Code itself safe and
-well-configured. You drive the actual project work through BMAD, running inside
-Claude Code.
+If you use **BMAD-METHOD** (the "Breakthrough Method for Agile AI-Driven
+Development") — a framework that gives the AI a structured way to plan and build,
+walking through roles like analyst, product manager, architect, and developer so
+a project goes from idea to working code in organized steps — it layers cleanly
+on top of this kit. The kit's `CLAUDE.md` habits and the safety hooks apply to
+every Claude Code session, including the ones where you run BMAD, without getting
+in its way.
 
 BMAD installs *per project*, with its own installer. Inside a project folder:
 
@@ -233,9 +260,9 @@ source of truth and stay up to date.)
 - **BMAD install guide:** https://docs.bmad-method.org/how-to/install-bmad/
 - **BMAD on GitHub:** https://github.com/bmad-code-org/BMAD-METHOD
 
-The kit's `CLAUDE.md` (good general habits) and the safety hooks apply to every
-Claude Code session, including the ones where you're running BMAD — they layer
-underneath BMAD without getting in its way.
+**Don't use BMAD?** That's completely fine — nothing in this kit depends on it.
+Skip this section; the safe defaults and hooks work on their own, and you can
+plan your projects however you like (including just talking to Claude directly).
 
 ---
 
@@ -249,12 +276,12 @@ your project, and run `claude`.
 - [ ] Install **Claude Code** and log in (Step 2).
 - [ ] Create a **GitHub account**, set your git name/email, and run
       `gh auth login` (Step 3).
-- [ ] Copy this kit's **CLAUDE.md, settings.json, and hooks** into `~/.claude/`
-      (Step 4).
-- [ ] **Test** that a dangerous command gets blocked (Step 5).
+- [ ] Run **`./install.sh`** to copy CLAUDE.md, settings.json, and the hooks into
+      `~/.claude/` (Step 4).
+- [ ] Run **`./test-hooks.sh`** to confirm the safety hooks work (Step 5).
 - [ ] (Optional) Add MCP add-ons like web search — see `mcp-setup.md`.
-- [ ] In your first real project folder, run `npx bmad-method install` and start
-      building with BMAD.
+- [ ] (Optional) If you use BMAD, run `npx bmad-method install` in your first
+      project folder. If you don't, just `cd` into a project and run `claude`.
 
 If anything in here doesn't match what you see on screen, trust the official docs
 linked above — tools update over time, and those pages stay current.
@@ -267,3 +294,12 @@ linked above — tools update over time, and those pages stay current.
 - [Install WSL (Microsoft)](https://learn.microsoft.com/windows/wsl/install)
 - [How to Install BMAD](https://docs.bmad-method.org/how-to/install-bmad/)
 - [BMAD-METHOD on GitHub](https://github.com/bmad-code-org/BMAD-METHOD)
+
+---
+
+## License
+
+Released under the **MIT License** — see [LICENSE](LICENSE). You're free to use,
+modify, and share this kit. It's provided as-is, with no warranty.
+
+Suggestions and fixes are welcome: open an issue or a pull request.
