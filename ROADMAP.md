@@ -35,6 +35,19 @@ despite the hook's own docs saying it shouldn't be — was found and fixed).
 
 ## Later — nice-to-haves
 
+- [ ] **Point to the "context dashboard" once it's open-sourced.** A personal
+      context-layer dashboard (unifies your chats/repos/plans/open-items into one
+      view; FastAPI + React) exists but is currently a **private, data-heavy
+      personal-productivity tool**. If/when its *code* is published with the
+      personal data stripped, it could earn a one-line pointer under "Optional
+      related tools" — it's an advanced add, not a starter-kit core piece. Until
+      then, do NOT reference the private repo or its deployment URL from this
+      public kit.
+- [ ] **Revisit `gym` once the hosted version ships.** `gym` (an experiment store
+      for research/ML) is being turned into a hosted product. Wait for that before
+      considering any pointer, and it's only relevant for someone doing ML work.
+      (`AVC`, the home-grown planning methodology, is now retired/obsolete and
+      stays excluded — BMAD covers planning.)
 - [ ] **PowerShell port of the four hooks** for people who stay on native
       Windows and refuse WSL2. Documented as out-of-scope in DECISIONS.md;
       revisit only if a real recipient actually hits this.
