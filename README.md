@@ -266,6 +266,21 @@ plan your projects however you like (including just talking to Claude directly).
 
 ---
 
+## Optional related tools
+
+These are **not** part of the kit and you don't need any of them — just pointers
+in case they're useful as you grow into Claude Code:
+
+- **[claude-usage-swap (`cus`)](https://github.com/rayistern/claude-usage-swap)** —
+  if you ever run **more than one** Claude account (for example, to spread heavy
+  usage across accounts), `cus` swaps the active account for you and shows usage
+  in your status line. Not needed for a single account — skip it unless and until
+  you're in that situation. Open source.
+
+More may be added here over time as they're released.
+
+---
+
 ## What to do first — hands-off checklist
 
 Work down this list once. After that, day-to-day you just open a terminal, go to
